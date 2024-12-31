@@ -8,7 +8,8 @@ const Navbar = () => {
       <div className="container">
         {/* Logo */}
         <a className="navbar-brand fw-bold text-primary" href="#">
-          Logo
+        <span className="text-warning h4 mb-0">📚</span>
+        <span className="ms-2">Bookland</span>
         </a>
 
         {/* Mobile Toggle Button */}
