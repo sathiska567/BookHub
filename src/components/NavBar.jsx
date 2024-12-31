@@ -1,7 +1,26 @@
+import { message } from 'antd';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
+
+  const handleLoginNavigate = async()=>{
+    try {
+      navigate("/login")
+    } catch (error) {
+      message.error(error.message)
+    }
+  }
+
+  const handleRegisterNavigate = async()=>{
+    try {
+      navigate("/register")
+    } catch (error) {
+      message.error(error.message)
+    }
+  }
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark py-3">
@@ -55,10 +74,10 @@ const Navbar = () => {
 
           {/* Auth Buttons */}
           <div className="d-flex gap-2 mt-3 mt-lg-0">
-            <button className="btn btn-outline-light" type="button">
+            <button className="btn btn-outline-light" type="button" onClick={handleLoginNavigate}>
               Sign In
             </button>
-            <button className="btn btn-primary" type="button">
+            <button className="btn btn-primary" type="button" onClick={handleRegisterNavigate}>
               Register
             </button>
           </div>

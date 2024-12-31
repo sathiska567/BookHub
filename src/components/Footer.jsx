@@ -36,15 +36,15 @@ const Footer = () => {
             <div className="contact-info">
               <div className="contact-item">
                 <Phone size={20} />
-                <span>+1 234 567 890</span>
+                <span>+94 717981980</span>
               </div>
               <div className="contact-item">
                 <Mail size={20} />
-                <span>info@company.com</span>
+                <span>sasindusathiska@gmail.com</span>
               </div>
               <div className="contact-item">
                 <MapPin size={20} />
-                <span>123 Business St, City, Country</span>
+                <span>259/1A Meegoda North , Meegoda</span>
               </div>
             </div>
           </div>
@@ -54,7 +54,7 @@ const Footer = () => {
         <div className="footer-bottom">
           <div className="row">
             <div className="col-md-6">
-              <p className="copyright">© 2024 Company Name. All rights reserved.</p>
+              <p className="copyright">© 2025 Company Name. All rights reserved.</p>
             </div>
             <div className="col-md-6">
               <div className="footer-bottom-links">

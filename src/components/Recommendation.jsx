@@ -3,7 +3,11 @@ import Navbar from './NavBar'
 import './component.css'
 import img from '../assets/book.webp'
 
-export default function Recommendation() {
+export default function Recommendation({ bookItem = [] }) {
+
+  console.log(bookItem[0]);
+  
+
   return (
     <div className="bg-dark text-white main-section">
       <Navbar />
@@ -25,7 +29,7 @@ export default function Recommendation() {
             </div>
 
             <div className="d-flex gap-3">
-              <button className="btn btn-primary px-4">Buy Now</button>
+              <button className="btn btn-primary px-4">Preview Now</button>
               <button className="btn btn-outline-light px-4">See Details</button>
             </div>
 
