@@ -255,7 +255,7 @@ const AdSinglePage = () => {
                   Add to Cart
                 </button>
                 <Tooltip
-                  title="Please log in to view details"
+                  title="Please log in to Download details"
                   visible={!token} // Show tooltip only if token is absent
                 >
                   <button

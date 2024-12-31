@@ -107,7 +107,7 @@ const SpecialOffers = () => {
                     </div>
                     <div className="d-flex gap-2">
                       <Tooltip
-                        title="Please log in to view details"
+                        title="Please log in to the System"
                         visible={!token} // Show tooltip only if token is absent
                       >
                         <button
