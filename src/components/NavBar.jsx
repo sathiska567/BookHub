@@ -1,6 +1,7 @@
 import { message } from 'antd';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {LogOut } from 'lucide-react';
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -22,11 +23,21 @@ const Navbar = () => {
     }
   }
 
+  const handleLogOutNavigate = async()=>{
+    try {
+      localStorage.clear()
+      message.success("Logout Successful")
+      navigate("/home")
+    } catch (error) {
+      message.error(error.message)
+    }
+  }
+
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark py-3">
       <div className="container">
         {/* Logo */}
-        <a className="navbar-brand fw-bold text-primary" href="#">
+        <a className="navbar-brand fw-bold text-primary" href="/home">
         <span className="text-warning h4 mb-0">📚</span>
         <span className="ms-2">Bookland</span>
         </a>
@@ -80,6 +91,15 @@ const Navbar = () => {
             <button className="btn btn-primary" type="button" onClick={handleRegisterNavigate}>
               Register
             </button>
+
+            <button
+                className="btn btn-primary d-flex align-items-center gap-2 px-3 py-2"
+                type="button"
+                onClick={handleLogOutNavigate}
+              >
+                <LogOut size={18} />
+                <span>Logout</span>
+              </button>
           </div>
         </div>
       </div>

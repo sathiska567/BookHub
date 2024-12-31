@@ -2,8 +2,10 @@ import React from 'react'
 import Navbar from './NavBar'
 import './component.css'
 import img from '../assets/book.webp'
+import { Tooltip } from 'antd';
 
 export default function Recommendation({ bookItem = [] }) {
+ const token = localStorage.getItem('token');
 
   console.log(bookItem[0]);
   
@@ -29,8 +31,13 @@ export default function Recommendation({ bookItem = [] }) {
             </div>
 
             <div className="d-flex gap-3">
-              <button className="btn btn-primary px-4">Preview Now</button>
-              <button className="btn btn-outline-light px-4">See Details</button>
+            <Tooltip
+                  title="Please log in to view details"
+                  visible={!token} // Show tooltip only if token is absent
+                >
+                   <button className="btn btn-primary px-4">Preview Now</button>
+                   <button className="btn btn-outline-light px-4">See Details</button>
+            </Tooltip>
             </div>
 
             <div className="mt-5">

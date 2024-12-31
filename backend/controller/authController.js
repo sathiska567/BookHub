@@ -4,10 +4,10 @@ const { authModel } = require("../models/authModel");
 
 const authController = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password } = req.body;
 
     // Check if all fields are provided
-    if (!name || !email || !password || !role) {
+    if (!name || !email || !password) {
       return res.status(400).send({
         success: false,
         message: "All fields are required.",
@@ -26,7 +26,7 @@ const authController = async (req, res) => {
     const saltRounds = 10; 
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    const newUser = new authModel({ name, email, password: hashedPassword, role });
+    const newUser = new authModel({ name, email, password: hashedPassword });
     await newUser.save();
 
     return res.status(201).send({
@@ -48,9 +48,9 @@ const authLoginController = async(req,res)=>{
     console.log(req.body);
     const {email , password} = req.body
 
-    const secretKey = process.env.SECRETE_KEY; // Make sure to store this in an environment variable
+    const secretKey = process.env.SECRETE_KEY; 
     const options = {
-      expiresIn: '1h', // Token expiration time
+      expiresIn: '1h', 
     };
 
     const data = await authModel.findOne({email:email})
@@ -76,6 +76,8 @@ const authLoginController = async(req,res)=>{
 
     // Create the token
     const jwtToken = jwt.sign(payload, secretKey, options);
+    console.log(jwtToken);
+    
 
     return res.status(200).send({
       success:true,
@@ -95,21 +97,5 @@ const authLoginController = async(req,res)=>{
   }
 }
 
-const authOneUserDetailsController = async(req,res)=>{
-  try {
-    const data = await authModel.findOne({email:req.body.email})
-    return res.status(200).send({
-      success:true,
-      message:"User Details Fetch Successfully",
-      data: {
-        user: data, 
-      },
-    })
-  } catch (error) {
-    return res.status(400).send({
-      success:false,
-    })
-  }
-}
 
-module.exports = { authController , authLoginController , authOneUserDetailsController };
+module.exports = { authController , authLoginController };

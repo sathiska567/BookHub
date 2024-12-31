@@ -18,22 +18,6 @@ const userSchema = new mongoose.Schema({
       type:String,
       required:false
     },
-    isAdmin:{
-        type:Boolean,
-        required:false
-    },
-    isDoctor:{
-        type:Boolean,
-        required:false
-    },
-    isPatient:{
-        type:Boolean,
-        required:false
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
 });
 
 const authModel = mongoose.model('authModel', userSchema);

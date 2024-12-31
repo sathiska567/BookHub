@@ -3,17 +3,19 @@ import { ChevronLeft, ChevronRight, Download, Heart, Share2 } from 'lucide-react
 import img1 from '../assets/book.webp';
 import './component.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Tooltip } from 'antd';
 
 const FeaturedProduct = ({ bookItem = [] }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [isSliding, setIsSliding] = useState(false);
   const [slideDirection, setSlideDirection] = useState('next');
+  const token = localStorage.getItem("token");
 
   // Limit to first three items
   const limitedBooks = bookItem.slice(0, 3);
   console.log(limitedBooks);
-  
+
 
   const handleSlide = (direction) => {
     setIsSliding(true);
@@ -157,32 +159,45 @@ const FeaturedProduct = ({ bookItem = [] }) => {
               </p>
 
               <div className="d-flex gap-3">
-                <button
-                  className="btn btn-primary btn-lg px-4 d-flex align-items-center gap-2"
-                  style={{
-                    transition: 'all 0.3s ease',
-                    background: 'linear-gradient(45deg, #2193b0, #6dd5ed)',
-                    border: 'none',
-                    transform: 'translateY(0)',
-                    boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
-                  }}
-                  onClick={() => window.open(currentBook.previewLink, '_blank')}
+                <Tooltip
+                  title="Please log in to view details"
+                  visible={!token} // Show tooltip only if token is absent
                 >
-                  <Download size={20} /> {/* Use Download icon */}
-                  Download
-                </button>
-                <button
-                  className="btn btn-outline-secondary btn-lg px-4"
-                  style={{
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                      transform: 'translateY(-3px)',
-                    },
-                  }}
-                  onClick={() => window.open(currentBook.previewLink, '_blank')} 
+                  <button
+                    className="btn btn-primary btn-lg px-4 d-flex align-items-center gap-2"
+                    style={{
+                      transition: 'all 0.3s ease',
+                      background: 'linear-gradient(45deg, #2193b0, #6dd5ed)',
+                      border: 'none',
+                      transform: 'translateY(0)',
+                      boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
+                    }}
+                    onClick={() => window.open(currentBook.previewLink, '_blank')}
+                    disabled={!token}
+                  >
+                    <Download size={20} /> 
+                    Download
+                  </button>
+                  </Tooltip>
+
+                  <Tooltip
+                  title="Please log in to view details"
+                  visible={!token} // Show tooltip only if token is absent
                 >
-                  See Details
-                </button>
+                  <button
+                    className="btn btn-outline-secondary btn-lg px-4"
+                    style={{
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        transform: 'translateY(-3px)',
+                      },
+                    }}
+                    onClick={() => window.open(currentBook.previewLink, '_blank')}
+                    disabled={!token}
+                  >
+                    See Details
+                  </button>
+                  </Tooltip>
               </div>
             </div>
           </div>

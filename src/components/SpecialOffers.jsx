@@ -3,9 +3,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import img from '../assets/book.webp'
 import img1 from '../assets/book2.jpg'
 import img2 from '../assets/book3.webp'
+import { Tooltip } from 'antd';
 
 const SpecialOffers = () => {
   const [hoveredId, setHoveredId] = useState(null);
+  const token = localStorage.getItem('token');
 
   const offers = [
     {
@@ -62,7 +64,7 @@ const SpecialOffers = () => {
         <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
           {offers.map((offer) => (
             <div key={offer.id} className="col">
-              <div 
+              <div
                 className={`card h-100 border-0 shadow-sm ${hoveredId === offer.id ? 'shadow-lg' : ''}`}
                 onMouseEnter={() => setHoveredId(offer.id)}
                 onMouseLeave={() => setHoveredId(null)}
@@ -93,7 +95,7 @@ const SpecialOffers = () => {
                   <p className="card-text text-muted mb-4" style={{ fontSize: '0.9rem' }}>
                     {offer.description}
                   </p>
-                  
+
                   <div className="d-flex justify-content-between align-items-center">
                     <div className="price-container">
                       <span className="fs-4 fw-bold text-primary me-2">
@@ -104,18 +106,24 @@ const SpecialOffers = () => {
                       </span>
                     </div>
                     <div className="d-flex gap-2">
-                      <button 
-                        className="btn btn-primary"
+                      <Tooltip
+                        title="Please log in to view details"
+                        visible={!token} // Show tooltip only if token is absent
                       >
-                        Add to Cart
-                      </button>
+                        <button
+                          className="btn btn-primary"
+                          disabled={!token}
+                        >
+                          Add to Cart
+                        </button>
+                      </Tooltip>
                     </div>
                   </div>
                 </div>
 
                 {/* Hover Overlay */}
                 {hoveredId === offer.id && (
-                  <div 
+                  <div
                     className="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-10"
                     style={{ transition: 'all 0.3s ease' }}
                   />

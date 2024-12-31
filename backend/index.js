@@ -4,7 +4,6 @@ const cors = require('cors');
 const connectDB = require('./db/dbConfig'); 
 
 const authRoute = require("./routes/authRoute")
-const hospitalsRoute = require("./routes/hospitalsRoute")
 
 const app = express();
 
@@ -18,6 +17,5 @@ const PORT = 8080;
 connectDB();
 
 app.use("/api/v1/auth", authRoute);
-app.use("/api/v1/get" , hospitalsRoute)
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

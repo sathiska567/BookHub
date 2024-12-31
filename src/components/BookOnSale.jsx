@@ -8,6 +8,7 @@ const BookCarousel = (props) => {
   const [books, setBookItem] = useState([]);
   const [isSliding, setIsSliding] = useState(false);
   const [hoveredCard, setHoveredCard] = useState(null);
+  const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
   useEffect(() => {

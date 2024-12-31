@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const DB_URI = 'mongodb+srv://sasindusathiska:sasindu16941@cluster0.e4ojf.mongodb.net/MediConnect';
+const DB_URI = process.env.DB_URI;
 
 const connectDB = async () => {
   try {

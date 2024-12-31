@@ -1,24 +1,119 @@
 import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Eye, EyeOff } from 'lucide-react';
+import { message } from 'antd';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
 
+  const [errors, setErrors] = useState({
+    email: '',
+    password: ''
+  });
+
+  const [touched, setTouched] = useState({
+    email: false,
+    password: false
+  });
+
+  // Validation rules
+  const validateField = (name, value) => {
+    switch (name) {
+      case 'email':
+        if (!value) {
+          return 'Email is required';
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          return 'Please enter a valid email address';
+        }
+        return '';
+
+      case 'password':
+        if (!value) {
+          return 'Password is required';
+        }
+        return '';
+
+      default:
+        return '';
+    }
+  };
+
   const handleInputChange = (e) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: value
+    });
+
+    if (touched[name]) {
+      setErrors({
+        ...errors,
+        [name]: validateField(name, value)
+      });
+    }
+  };
+
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    setTouched({
+      ...touched,
+      [name]: true
+    });
+    setErrors({
+      ...errors,
+      [name]: validateField(name, value)
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    // Handle login logic here
+
+    // Validate all fields
+    const newErrors = {
+      email: validateField('email', formData.email),
+      password: validateField('password', formData.password)
+    };
+
+    // Set all fields as touched
+    setTouched({
+      email: true,
+      password: true
+    });
+
+    setErrors(newErrors);
+
+    // Check if there are any errors
+    if (!Object.values(newErrors).some(error => error)) {
+      console.log('Form submitted:', formData);
+
+      try {
+        const response = await axios.post("http://localhost:8080/api/v1/auth/login",{email:formData.email,password:formData.password});
+        if(response.data.success){
+          console.log(response.data);
+          localStorage.setItem('token', response.data.data.token);
+          message.success('Login successful');
+          navigate('/home');
+        }
+        
+      } catch (error) {
+        message.error(error.message)
+      }
+
+    }
+  };
+
+  const getInputBorderColor = (fieldName) => {
+    if (touched[fieldName]) {
+      return errors[fieldName] ? 'border-danger' : 'border-success';
+    }
+    return '';
   };
 
   return (
@@ -31,33 +126,38 @@ const LoginPage = () => {
             <h1 className="fw-bold mb-5">BookLand</h1>
 
             {/* Login Form */}
-            <form onSubmit={handleSubmit} className="needs-validation">
+            <form onSubmit={handleSubmit} noValidate>
               <div className="mb-4">
                 {/* Email Input */}
                 <div className="form-floating mb-3">
                   <input
                     type="email"
-                    className="form-control"
+                    className={`form-control ${getInputBorderColor('email')}`}
                     id="emailInput"
                     name="email"
                     placeholder="name@example.com"
                     value={formData.email}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
                     required
                   />
                   <label htmlFor="emailInput">Email</label>
+                  {touched.email && errors.email && (
+                    <div className="text-danger small mt-1">{errors.email}</div>
+                  )}
                 </div>
 
                 {/* Password Input */}
                 <div className="form-floating position-relative">
                   <input
                     type={showPassword ? 'text' : 'password'}
-                    className="form-control"
+                    className={`form-control ${getInputBorderColor('password')}`}
                     id="passwordInput"
                     name="password"
                     placeholder="Password"
                     value={formData.password}
                     onChange={handleInputChange}
+                    onBlur={handleBlur}
                     required
                   />
                   <label htmlFor="passwordInput">Password</label>
@@ -73,6 +173,9 @@ const LoginPage = () => {
                       <Eye size={20} />
                     )}
                   </button>
+                  {touched.password && errors.password && (
+                    <div className="text-danger small mt-1">{errors.password}</div>
+                  )}
                 </div>
               </div>
 
@@ -93,7 +196,7 @@ const LoginPage = () => {
 
               {/* Create Account Link */}
               <div className="text-center small">
-                <span className="text-secondary">Don't have account? </span>
+                <span className="text-secondary">Don't have an account? </span>
                 <a href="/register" className="text-decoration-none text-primary">
                   Create account
                 </a>
@@ -101,7 +204,6 @@ const LoginPage = () => {
             </form>
           </div>
 
-          {/* Footer */}
           <div className="text-center small text-secondary mt-4">
             <p className="mb-0">
               Copyright © 2024 Design by BookLand
@@ -109,7 +211,6 @@ const LoginPage = () => {
           </div>
         </div>
 
-        {/* Right side - Background Image */}
         <div
           className="col-md-7 col-lg-8 d-none d-md-block px-0"
           style={{

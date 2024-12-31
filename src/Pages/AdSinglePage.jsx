@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { Star, ShoppingCart, TruckIcon, RefreshCcw, LockIcon } from 'lucide-react';
+import { Star, ShoppingCart, TruckIcon, RefreshCcw, LockIcon, Download } from 'lucide-react';
 import './page.css';
 import Navbar from '../components/NavBar';
+import { Tooltip } from 'antd';
 
 const AdSinglePage = () => {
   const [quantity, setQuantity] = useState(1);
@@ -10,6 +11,7 @@ const AdSinglePage = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const location = useLocation();
   const books = location.state.book;
+  const token = localStorage.getItem("token")
 
   useEffect(() => {
     setIsLoaded(true);
@@ -40,11 +42,11 @@ const AdSinglePage = () => {
             transform: isImageHovered ? 'scale(1.02)' : 'scale(1)',
             boxShadow: isImageHovered ? '0 20px 40px rgba(0,0,0,0.1)' : '0 10px 20px rgba(0,0,0,0.05)'
           }}
-          onMouseEnter={() => setIsImageHovered(true)}
-          onMouseLeave={() => setIsImageHovered(false)}>
-            <img 
-              src={books.volumeInfo.imageLinks.smallThumbnail} 
-              alt={books.volumeInfo.title} 
+            onMouseEnter={() => setIsImageHovered(true)}
+            onMouseLeave={() => setIsImageHovered(false)}>
+            <img
+              src={books.volumeInfo.imageLinks.smallThumbnail}
+              alt={books.volumeInfo.title}
               style={{
                 width: '100%',
                 height: 'auto',
@@ -116,8 +118,8 @@ const AdSinglePage = () => {
               </div>
               <div>Pages: {books.volumeInfo.pageCount}</div>
               <div>
-                Authors: 
-                <ul style={{ 
+                Authors:
+                <ul style={{
                   listStyle: 'none',
                   padding: 0,
                   margin: '0.5rem 0'
@@ -133,14 +135,14 @@ const AdSinglePage = () => {
                       transition: 'all 0.3s ease',
                       cursor: 'pointer'
                     }}
-                    onMouseOver={e => {
-                      e.target.style.background = '#e9ecef';
-                      e.target.style.transform = 'translateY(-2px)';
-                    }}
-                    onMouseOut={e => {
-                      e.target.style.background = '#f8f9fa';
-                      e.target.style.transform = 'translateY(0)';
-                    }}>
+                      onMouseOver={e => {
+                        e.target.style.background = '#e9ecef';
+                        e.target.style.transform = 'translateY(-2px)';
+                      }}
+                      onMouseOut={e => {
+                        e.target.style.background = '#f8f9fa';
+                        e.target.style.transform = 'translateY(0)';
+                      }}>
                       {author}
                     </li>
                   ))}
@@ -160,7 +162,7 @@ const AdSinglePage = () => {
                 ? (
                   <>
                     {books.volumeInfo.description.substring(0, 800)}...
-                    <a 
+                    <a
                       href={books.volumeInfo.previewLink}
                       target='_blank'
                       rel="noopener noreferrer"
@@ -248,40 +250,39 @@ const AdSinglePage = () => {
                   transition: 'all 0.3s ease',
                   transform: 'translateY(0)',
                   boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
-                }}
-                onMouseOver={e => {
-                  e.target.style.transform = 'translateY(-2px)';
-                  e.target.style.boxShadow = '0 6px 12px rgba(0,0,0,0.15)';
-                }}
-                onMouseOut={e => {
-                  e.target.style.transform = 'translateY(0)';
-                  e.target.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
                 }}>
                   <ShoppingCart size={20} />
                   Add to Cart
                 </button>
-                <button style={{
-                  padding: '1rem',
-                  borderRadius: '25px',
-                  border: '2px solid #007bff',
-                  background: 'transparent',
-                  color: '#007bff',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  transform: 'translateY(0)'
-                }}
-                onMouseOver={e => {
-                  e.target.style.background = '#007bff';
-                  e.target.style.color = 'white';
-                  e.target.style.transform = 'translateY(-2px)';
-                }}
-                onMouseOut={e => {
-                  e.target.style.background = 'transparent';
-                  e.target.style.color = '#007bff';
-                  e.target.style.transform = 'translateY(0)';
-                }}>
-                  Buy Now
-                </button>
+                <Tooltip
+                  title="Please log in to view details"
+                  visible={!token} // Show tooltip only if token is absent
+                >
+                  <button
+                    className="btn btn-primary btn-lg px-4 d-flex align-items-center gap-2"
+                    style={{
+                      padding: '1rem',
+                      borderRadius: '25px',
+                      border: 'none',
+                      background: '#007bff',
+                      color: 'white',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '0.5rem',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease',
+                      transform: 'translateY(0)',
+                      boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                      fontSize:"15px"
+                    }}
+                    onClick={() => window.open(currentBook.previewLink, '_blank')}
+                    disabled={!token}
+                  >
+                    <Download size={20} />
+                    Download
+                  </button>
+                </Tooltip>
               </div>
             </div>
 
