@@ -2,6 +2,7 @@ import { message } from 'antd';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {LogOut } from 'lucide-react';
+import axios from 'axios';
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -27,11 +28,44 @@ const Navbar = () => {
     try {
       localStorage.clear()
       message.success("Logout Successful")
+      window.location.reload()
       navigate("/home")
     } catch (error) {
       message.error(error.message)
     }
   }
+
+  const handleSearch = async () => {
+    try {
+      if (!searchQuery) {
+        message.warning('Please enter a search term.');
+        return;
+      }
+      console.log("Searching for:", searchQuery);
+  
+      const response = await axios.get(
+        `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(searchQuery)}&key=AIzaSyCjYWVaTy1vF8yF3J47KxQ4BgqghVmbYAU`
+      );
+  
+      if (response.data.items && response.data.items.length > 0) {
+        console.log("Books found:", response.data.items);
+        message.success('Search completed successfully!');
+
+      } else {
+        console.log("No books found.");
+        message.warning('No results found for your search.');
+      }
+    } catch (error) {
+      console.error("Error during search:", error);
+
+      if (error.response) {
+        message.error(`API Error: ${error.response.data.error.message}`);
+      } else {
+        message.error("An unexpected error occurred during search.");
+      }
+    }
+  };
+  
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark py-3">
@@ -68,6 +102,7 @@ const Navbar = () => {
                   fill="currentColor"
                   className="bi bi-search"
                   viewBox="0 0 16 16"
+                  onClick={handleSearch}
                 >
                   <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
                 </svg>
