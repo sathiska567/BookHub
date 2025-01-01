@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema({
       type:String,
       required:false
     },
+    otp:{
+        type:String,
+        required:false
+    }
 });
 
 const authModel = mongoose.model('authModel', userSchema);

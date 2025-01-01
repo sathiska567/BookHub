@@ -128,7 +128,7 @@ const RegistrationPage = () => {
         navigate('/login')
         
       } catch (error) {
-         message.error(error.message)
+         message.error('Failed to Register. Please Check Email and Password.')
       }
     }
   };

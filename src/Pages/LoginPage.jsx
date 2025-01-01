@@ -103,7 +103,7 @@ const LoginPage = () => {
         }
         
       } catch (error) {
-        message.error(error.message)
+        message.error('Failed to Login. Please try again.')
       }
 
     }
@@ -167,11 +167,11 @@ const LoginPage = () => {
                     onClick={() => setShowPassword(!showPassword)}
                     style={{ zIndex: 5 }}
                   >
-                    {showPassword ? (
+                    {/* {showPassword ? (
                       <EyeOff size={20} />
                     ) : (
                       <Eye size={20} />
-                    )}
+                    )} */}
                   </button>
                   {touched.password && errors.password && (
                     <div className="text-danger small mt-1">{errors.password}</div>
@@ -181,7 +181,7 @@ const LoginPage = () => {
 
               {/* Forgot Password Link */}
               <div className="text-end mb-4">
-                <a href="#" className="text-decoration-none text-primary small">
+                <a href="/forgotten-password" className="text-decoration-none text-primary small">
                   Forgot Password?
                 </a>
               </div>
